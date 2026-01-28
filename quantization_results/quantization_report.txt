@@ -1,0 +1,41 @@
+
+QUANTIZATION EVALUATION REPORT (WITH CLASSICAL IR METRICS)
+================================================================================
+
+Test Configuration:
+- Dataset: 70 queries
+- Embedding Model: text-embedding-3-small (1536 dims)
+- Elasticsearch Indices: claudiagpt_dev_catapa_platform_development, claudiagpt_dev_catapa_platform_development_int8, claudiagpt_dev_catapa_platform_development_bbq
+- K: 10
+- Evaluation Metrics: Hit@K, MRR, NDCG, MAP, Recall, Precision
+
+Summary Results:
+                 label   hit@10      mrr  ndcg_cut_10  map_cut_10  recall_10  avg_total_time_ms  p95_total_time_ms
+        single:float32 0.642857 0.440215     0.295542    0.203925   0.311820         545.712031         723.320432
+           single:int8 0.671429 0.463770     0.309176    0.213567   0.325510         574.493662         911.509513
+       single:bbq_only 0.657143 0.453968     0.304266    0.211196   0.318963         655.505470         916.393875
+two_stage:bbq+float_m1 0.657143 0.453968     0.304266    0.211196   0.318963         821.981068        1035.417822
+two_stage:bbq+float_m2 0.657143 0.453968     0.304266    0.211196   0.318963        1044.269274        1432.858207
+two_stage:bbq+float_m4 0.657143 0.453968     0.304266    0.211196   0.318963        1343.136380        1815.617491
+two_stage:bbq+float_m8 0.671429 0.456468     0.306674    0.212030   0.323724        1930.621455        3174.393600
+
+Key Findings:
+1. Float32 Baseline:
+   - Hit@10: 64.3%
+   - NDCG@10: 0.296
+   - Recall@10: 0.312
+   - MAP@10: 0.204
+   - Latency: 545.71ms
+
+2. Int8 Quantization:
+   - Hit@10: 104.4% of baseline
+   - NDCG@10: 104.6% of baseline
+   - Recall@10: 104.4% of baseline
+   - Speed: 0.95x faster
+
+3. BBQ (Binary) Quantization:
+   - Hit@10: 102.2% of baseline
+   - NDCG@10: 103.0% of baseline
+   - Recall@10: 102.3% of baseline
+   - Speed: 0.83x faster
+
